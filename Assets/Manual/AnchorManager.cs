@@ -7,12 +7,13 @@ public class AnchorManager : MonoBehaviour {
   private static AnchorManager _instance;
   [SerializeField] private GameObject placementPrefab;
   private HashSet<Guid> _anchorUuids = new();
-  private readonly string _savePath = Application.persistentDataPath + "/Anchors.txt";
+  private string _savePath;
   private Logger _logger;
 
   private void Awake() {
     if (_instance == null) {
       _instance = this;
+      _savePath = Application.persistentDataPath + "/Anchors.txt";
       _logger = GetComponent<Logger>();
       LoadAnchorsFromFile();
     } else {

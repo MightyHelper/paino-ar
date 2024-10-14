@@ -42,7 +42,8 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -191,6 +192,7 @@ GameObject:
   - component: {fileID: 85050638}
   - component: {fileID: 85050639}
   - component: {fileID: 85050640}
+  - component: {fileID: 85050641}
   m_Layer: 0
   m_Name: SceneManager
   m_TagString: Untagged
@@ -239,6 +241,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logText: {fileID: 421585039}
+--- !u!114 &85050641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 85050635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31fc879e70bfb834a9253ef426616b28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &165585583
 PrefabInstance:
   m_ObjectHideFlags: 0
