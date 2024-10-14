@@ -2,9 +2,10 @@
   "name": "nodeserver",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
+  "type": "module",
   "scripts": {
-    "start": "node index.js",
+    "start": "node index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
@@ -17,5 +18,10 @@
     "easymidi": "^3.1.0",
     "express": "^4.17.1",
     "ws": "^7.1.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/ws": "^8.5.12",
+    "ts-node": "^10.9.2"
   }
 }
