@@ -1,11 +1,13 @@
 import { writable } from 'svelte/store';
 
+export type ParsedMidiMessage = { type: string, channel: number | null, key: number, state: number };
 export const midi = writable<MIDIAccess | null>(null);
 export const activeMidiInputs = writable<{ [id: string]: boolean }>({});
 export const activeMidiOutputs = writable<{ [id: string]: boolean }>({});
 export const midiInputs = writable<MIDIInput[]>([]);
 export const midiOutputs = writable<MIDIOutput[]>([]);
 export const lastMidiMessage = writable<MIDIMessageEvent | null>(null);
+export const lastParsedMidiMessage = writable<ParsedMidiMessage | null>(null);
 export const activeKeys = writable<{ [key: string]: number }>({});
 export const activePedal = writable<number>(0);
 
@@ -63,33 +65,47 @@ if (typeof window !== 'undefined') {
 		lastMidiMessage.subscribe((value) => {
 			if (value?.data == null) return;
 			let type = getType(value.data[0]);
+			let channel = value.data[0] & 0b00001111;
 			switch (type) {
 				case 'noteOn':
-					activeKeys.update((keys) => {
-						if (value?.data == null) return keys;
-						let channel = value.data[0] & 0b00001111;
-						keys[value.data[1]] = value.data[2];
-						console.debug(`Note on [${channel}]:`, value.data[1], value.data[2]);
-						return keys;
-					});
+					if (value?.data == null) return;
+					console.debug(`Note on [${channel}]:`, value.data[1], value.data[2]);
+					lastParsedMidiMessage.set({ type, channel, key: value.data[1], state: value.data[2] });
 					break;
 				case 'noteOff':
-					activeKeys.update((keys) => {
-						if (value?.data == null) return keys;
-						let channel = value.data[0] & 0b00001111;
-						keys[value.data[1]] = 0;
-						console.debug(`Note off [${channel}]:`, value.data[1]);
-						return keys;
-					});
+					if (value?.data == null) return;
+					console.debug(`Note off [${channel}]:`, value.data[1], value.data[2]);
+					lastParsedMidiMessage.set({ type, channel, key: value.data[1], state: value.data[2] });
 					break;
 				case 'controlChange':
 					console.debug('ControlChange:', value.data[1], value.data[2]);
 					if (value.data[1] === 64) {
-						activePedal.set(value.data[2]);
+						lastParsedMidiMessage.set({
+							'type': value.data[2] == 0 ? 'noteOff' : 'noteOn',
+							'channel': channel,
+							'key': -1,
+							'state': value.data[2]
+						})
 					}
 					break;
 			}
 		});
 	}
+	lastParsedMidiMessage.subscribe((value) => {
+		switch (value?.type) {
+			case 'noteOn':
+			activeKeys.update((keys) => {
+				keys[value.key] = value.state;
+				return keys;
+			});
+			break;
+			case 'noteOff':
+			activeKeys.update((keys) => {
+				keys[value.key] = 0;
+				return keys;
+			});
+			break;
+		}
+	})
 	main().then(() => console.log('MIDI initialized'));
 }

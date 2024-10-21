@@ -1,16 +1,16 @@
 <script lang="ts">
-	import { midi, midiInputs, midiOutputs, activeMidiInputs, activeMidiOutputs, activeKeys, activePedal } from '$lib/MidiStore';
-	import { connected, lastMessage } from '$lib/WebSocketConnection';
+	import {
+		midiInputs,
+		midiOutputs,
+		activeMidiInputs,
+		activeMidiOutputs,
+		activeKeys,
+		activePedal, lastParsedMidiMessage
+	} from '$lib/MidiStore';
+	import { websocket } from '$lib/WebSocketConnection';
 
 	let message = '???...';
-	midi.subscribe(value => {
-		if (!value) return;
-		let inputs = value.inputs;
-		inputs.forEach(input => {
-			console.log(input);
-		});
-	});
-	lastMessage.subscribe(value => {
+	$websocket?.lastMessage?.subscribe?.(value => {
 		if (!value) return;
 		switch (value.type) {
 			case 'status':
@@ -18,6 +18,13 @@
 				break;
 		}
 	});
+	let websocketConnected = $websocket?.connected;
+
+	lastParsedMidiMessage.subscribe(value => {
+		if (!value) return;
+		$websocket?.sendMessage?.({ type: 'keys', payload: value });
+	});
+
 	function countWhiteKeysBelow(midiNote: number): number {
 		const whiteKeysPerOctave = 7;
 		const octaves = Math.floor(midiNote / 12);
@@ -41,10 +48,10 @@
 	let midiHighestNote = 108;
 	let whiteKeysBeforeLowestNote = countWhiteKeysBelow(midiLowestNote);
 	let keyboardOffsetCM = -whiteKeysBeforeLowestNote * whiteKeyWidthCM;
-	let extra = (x: number) => x == 0 ? 0 : x + 0x3f
-  let asHex = (x: number) => x.toString(16).padStart(2, '0')
+	let extra = (x: number) => x == 0 ? 0 : x + 0x3f;
+	let asHex = (x: number) => x.toString(16).padStart(2, '0');
 </script>
-<h1>Welcome to PianoAR [{$connected ? 'ok' : 'er'}]: '{message}'</h1>
+<h1>Welcome to PianoAR [{$websocketConnected ? 'ok' : 'er'}]: '{message}'</h1>
 
 Inputs:
 <ul>
