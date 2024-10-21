@@ -1,11 +1,12 @@
 # Variables
-SRC = server.ts
+SRC = src/server.ts
 DIST = dist/server.js
 
 # Targets
-build:
+$(DIST): $(SRC)
 	tsc
 
+build: $(DIST)
 run: build
 	node $(DIST)
 
