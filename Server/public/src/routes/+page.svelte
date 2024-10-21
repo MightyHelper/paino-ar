@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { midi, midiInputs, midiOutputs, activeMidiInputs, activeMidiOutputs, activeKeys } from '$lib/MidiStore';
+	import { midi, midiInputs, midiOutputs, activeMidiInputs, activeMidiOutputs, activeKeys, activePedal } from '$lib/MidiStore';
 	import { connected, lastMessage } from '$lib/WebSocketConnection';
 
 	let message = '???...';
@@ -41,7 +41,8 @@
 	let midiHighestNote = 108;
 	let whiteKeysBeforeLowestNote = countWhiteKeysBelow(midiLowestNote);
 	let keyboardOffsetCM = -whiteKeysBeforeLowestNote * whiteKeyWidthCM;
-
+	let extra = (x: number) => x == 0 ? 0 : x + 0x3f
+  let asHex = (x: number) => x.toString(16).padStart(2, '0')
 </script>
 <h1>Welcome to PianoAR [{$connected ? 'ok' : 'er'}]: '{message}'</h1>
 
@@ -70,7 +71,7 @@ Piano:
 				  height: calc({whiteKeyHeightCM * cm_scale}cm - 2px);
 				  left: calc({(i * whiteKeyWidthCM + octave * octaveWidthCM + keyboardOffsetCM) * cm_scale}cm + 1px);
 				  top: 1px;
-				  background: #{(0xff - ($activeKeys[note] || 0)).toString(16).padStart(2, '0').repeat(3)};
+				  background: #{asHex(0xff - extra($activeKeys[note] || 0)).repeat(2) + asHex(0xff-2*$activePedal)};
 				"
         ></div>
       {/if}
@@ -82,7 +83,7 @@ Piano:
             height: calc({blackKeyHeightCM * cm_scale}cm - 2px);
             left: {(offsetCM + octave * octaveWidthCM + keyboardOffsetCM) * cm_scale}cm;
             top: 1px;
-            background: #{($activeKeys[note] || 0).toString(16).padStart(2, '0').repeat(3)};
+            background: #{asHex(extra($activeKeys[note] || 0)).repeat(2) + asHex(2*$activePedal)};
           "
         ></div>
       {/if}

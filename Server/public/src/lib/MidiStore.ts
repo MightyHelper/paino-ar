@@ -7,6 +7,7 @@ export const midiInputs = writable<MIDIInput[]>([]);
 export const midiOutputs = writable<MIDIOutput[]>([]);
 export const lastMidiMessage = writable<MIDIMessageEvent | null>(null);
 export const activeKeys = writable<{ [key: string]: number }>({});
+export const activePedal = writable<number>(0);
 
 const isNoteOff = (evt: number): boolean => (evt & 0b11110000) === 0b10000000;
 const isNoteOn = (evt: number): boolean => (evt & 0b11110000) === 0b10010000;
@@ -28,53 +29,67 @@ const getType = (evt: number): 'noteOff' | 'noteOn' | 'pressure' | 'controlChang
 };
 
 if (typeof window !== 'undefined') {
-	let midiAccess = await navigator.requestMIDIAccess();
-	let listeners: { [key: string]: ((event: MIDIMessageEvent) => void) } = {};
-	midi.set(midiAccess);
-	midiInputs.set(Array.from(midiAccess.inputs.values()));
-	midiOutputs.set(Array.from(midiAccess.outputs.values()));
-	midiAccess.addEventListener('statechange', () => {
+	async function main(){
+		let midiAccess = await navigator.requestMIDIAccess();
+		let listeners: { [key: string]: ((event: MIDIMessageEvent) => void) } = {};
+		midi.set(midiAccess);
 		midiInputs.set(Array.from(midiAccess.inputs.values()));
 		midiOutputs.set(Array.from(midiAccess.outputs.values()));
-	});
-	console.log('MIDI access:', midiAccess);
-	activeMidiInputs.subscribe(async (value) => {
-		for (let input of midiAccess.inputs.values()) {
-			if (value[input.id]) {
-				if (input.state === 'disconnected') await input.open();
-				let listener = (event: MIDIMessageEvent) => {
-					console.debug('MIDI message received:', event);
-					lastMidiMessage.set(event);
-				};
-				input.addEventListener('midimessage', listener);
-				listeners[input.id] = listener;
-				console.log('Listening to MIDI input:', input.id);
-			} else {
-				if (input.state === 'connected') await input.close();
-				input.removeEventListener('midimessage', listeners[input.id]);
-				console.log('Stopped listening to MIDI input:', input.id);
+		midiAccess.addEventListener('statechange', () => {
+			midiInputs.set(Array.from(midiAccess.inputs.values()));
+			midiOutputs.set(Array.from(midiAccess.outputs.values()));
+		});
+		console.log('MIDI access:', midiAccess);
+		activeMidiInputs.subscribe(async (value) => {
+			for (let input of midiAccess.inputs.values()) {
+				if (value[input.id]) {
+					if (input.state === 'disconnected') await input.open();
+					let listener = (event: MIDIMessageEvent) => {
+						if (event.data == null) return;
+						if (event.data[0] == 254) return; // Ignore active sensing
+						console.debug('MIDI message received:', event);
+						lastMidiMessage.set(event);
+					};
+					input.addEventListener('midimessage', listener);
+					listeners[input.id] = listener;
+					console.log('Listening to MIDI input:', input.id);
+				} else {
+					if (input.state === 'connected') await input.close();
+					input.removeEventListener('midimessage', listeners[input.id]);
+					console.log('Stopped listening to MIDI input:', input.id);
+				}
 			}
-		}
-	});
-	lastMidiMessage.subscribe((value) => {
-		if (value?.data == null) return;
-		let type = getType(value.data[0]);
-		switch (type) {
-			case 'noteOn':
-				activeKeys.update((keys) => {
-					if (value?.data == null) return keys;
-					keys[value.data[1]] = value.data[2];
-					console.log('Note on:', value.data[1], value.data[2]);
-					return keys;
-				});
-				break;
-			case 'noteOff':
-				activeKeys.update((keys) => {
-					if (value?.data == null) return keys;
-					keys[value.data[1]] = 0;
-					console.log('Note off:', value.data[1]);
-					return keys;
-				});
-		}
-	});
+		});
+		lastMidiMessage.subscribe((value) => {
+			if (value?.data == null) return;
+			let type = getType(value.data[0]);
+			switch (type) {
+				case 'noteOn':
+					activeKeys.update((keys) => {
+						if (value?.data == null) return keys;
+						let channel = value.data[0] & 0b00001111;
+						keys[value.data[1]] = value.data[2];
+						console.debug(`Note on [${channel}]:`, value.data[1], value.data[2]);
+						return keys;
+					});
+					break;
+				case 'noteOff':
+					activeKeys.update((keys) => {
+						if (value?.data == null) return keys;
+						let channel = value.data[0] & 0b00001111;
+						keys[value.data[1]] = 0;
+						console.debug(`Note off [${channel}]:`, value.data[1]);
+						return keys;
+					});
+					break;
+				case 'controlChange':
+					console.debug('ControlChange:', value.data[1], value.data[2]);
+					if (value.data[1] === 64) {
+						activePedal.set(value.data[2]);
+					}
+					break;
+			}
+		});
+	}
+	main().then(() => console.log('MIDI initialized'));
 }
