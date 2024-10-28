@@ -1,24 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class AnchorManager : MonoBehaviour {
-  private static AnchorManager _instance;
   [SerializeField] private GameObject placementPrefab;
   private HashSet<Guid> _anchorUuids = new();
+  private Dictionary<Guid, GameObject> _anchorGameObjects = new();
   private string _savePath;
-  private Logger _logger;
+  protected Logger _logger;
+  private GameObject _preview;
 
-  private void Awake() {
-    if (_instance == null) {
-      _instance = this;
-      _savePath = Application.persistentDataPath + "/Anchors.txt";
-      _logger = GetComponent<Logger>();
-      LoadAnchorsFromFile();
-    } else {
-      Destroy(this);
-    }
+  protected virtual void Awake() {
+    _savePath = Application.persistentDataPath + "/Anchors.txt";
+    _logger = GetComponent<Logger>();
+    LoadAnchorsFromFile();
+    _preview = Instantiate(placementPrefab);
+    OnNewItem(_preview);
   }
 
   private async void LoadAnchorsFromFile() {
@@ -35,7 +34,7 @@ public class AnchorManager : MonoBehaviour {
     RenderLoadedAnchors();
   }
 
-  private void OnApplicationQuit() {
+  protected virtual void OnApplicationQuit() {
     SaveAnchorsToFile();
   }
 
@@ -47,63 +46,79 @@ public class AnchorManager : MonoBehaviour {
     }
   }
 
-  void Update() {
-    if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger)) AddAnchor();
-    if (OVRInput.GetDown(OVRInput.Button.PrimaryHandTrigger)) LoadAnchorsFromFile();
-    if (OVRInput.GetDown(OVRInput.Button.SecondaryHandTrigger)) SaveAnchorsToFile();
-    if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger)) ClearSavedAnchors();
+  protected virtual void Update() {
+    try {
+      PreviewAnchor();      
+      if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger)) AddAnchor();
+      if (OVRInput.GetDown(OVRInput.Button.PrimaryHandTrigger)) LoadAnchorsFromFile();
+      if (OVRInput.GetDown(OVRInput.Button.SecondaryHandTrigger)) SaveAnchorsToFile();
+      if (OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger)) ClearSavedAnchors();
+    } catch (Exception e) {
+      _logger.Log($"Error: {e.Message}");
+    }
+  }
+  
+  private void PreviewAnchor() {
+    if (!_preview) return;
+    _preview.transform.position = PlacePosition;
+    _preview.transform.rotation = PlaceRotation;
   }
 
   private async void ClearSavedAnchors() {
-    // Remove from ovr
-    var result = await OVRSpatialAnchor.EraseAnchorsAsync(null, _anchorUuids);
-    if (!result.Success) {
-      _logger.Log($"Failed to erase anchors with error {result.Status}");
-      return;
-    }
-    
-    
-    // Remove from list and local storag
-    _anchorUuids.Clear();
-    SaveAnchorsToFile();
-    
-    // Delete gameobjects
-    foreach (var anchor in FindObjectsOfType<OVRSpatialAnchor>()) {
-      Destroy(anchor.gameObject);
-    }
-    
-    
+    if (await RemoveOvrAnchors()) return;
+    ClearAnchorCaches();
+    RemoveGameObjects();
     _logger.Log("Cleared saved anchors.");
   }
 
-  private void AddAnchor() {
-    var go = Instantiate(
-      placementPrefab,
-      OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch),
-      OVRInput.GetLocalControllerRotation(OVRInput.Controller.RTouch)
-    );
-    SetupAnchorAsync(go.AddComponent<OVRSpatialAnchor>(), saveAnchor: true);
+  private void RemoveGameObjects() {
+    FindObjectsByType<OVRSpatialAnchor>(FindObjectsSortMode.None).ToList()
+      .ForEach(anchor => OnItemRemoved(anchor.gameObject));
   }
 
-  private async void SetupAnchorAsync(OVRSpatialAnchor anchor, bool saveAnchor) {
-    // Keep checking for a valid and localized anchor state
+  private void ClearAnchorCaches() {
+    _anchorUuids.Clear();
+    SaveAnchorsToFile();
+  }
+
+  private async Task<bool> RemoveOvrAnchors() {
+    var result = await OVRSpatialAnchor.EraseAnchorsAsync(null, _anchorUuids);
+
+    if (result.Success) {
+      _logger.Log("Erased anchors.");
+      return false;
+    }
+    _logger.Log($"Failed to erase anchors with error {result.Status}");
+    return true;
+  }
+
+  private async void AddAnchor() {
+    var go = Instantiate(
+      placementPrefab,
+      PlacePosition,
+      PlaceRotation
+    );
+    await SetupAnchorAsync(go.AddComponent<OVRSpatialAnchor>(), saveAnchor: true);
+    OnNewItem(go);
+  }
+
+  private static Quaternion PlaceRotation => OVRInput.GetLocalControllerRotation(OVRInput.Controller.RTouch);
+  private static Vector3 PlacePosition => OVRInput.GetLocalControllerPosition(OVRInput.Controller.RTouch);
+
+  private async Task SetupAnchorAsync(OVRSpatialAnchor anchor, bool saveAnchor) {
     if (!await anchor.WhenLocalizedAsync()) {
       _logger.Log($"Unable to create anchor.");
       Destroy(anchor.gameObject);
       return;
     }
-
-    _logger.Log($"Creating anchor at {anchor.transform.position}.");
-
     if (!saveAnchor) return;
     var result = await anchor.SaveAnchorAsync();
-    if (result.Success) {
-      _logger.Log($"Anchor {anchor.Uuid} saved successfully.");
-      _anchorUuids.Add(anchor.Uuid);
-    } else {
+    if (!result.Success) {
       _logger.Log($"Anchor {anchor.Uuid} failed to save with error {result.Status}");
+      return;
     }
 
+    _anchorUuids.Add(anchor.Uuid);
   }
 
   /******************* Load Anchor Methods **********************/
@@ -134,5 +149,19 @@ public class AnchorManager : MonoBehaviour {
     var go = Instantiate(placementPrefab, pose.position, pose.rotation);
     var anchor = go.AddComponent<OVRSpatialAnchor>();
     unboundAnchor.BindTo(anchor);
+    OnNewItem(go);
+  }
+
+  protected virtual void OnNewItem(GameObject go) {
+    go.TryGetComponent<OVRSpatialAnchor>(out var anchor);
+    if (!anchor) return;
+    _anchorGameObjects.Add(anchor.Uuid, go);
+  }
+
+  protected virtual void OnItemRemoved(GameObject go) {
+    go.TryGetComponent<OVRSpatialAnchor>(out var anchor);
+    Destroy(go);
+    if (!anchor) return;
+    _anchorGameObjects.Remove(anchor.Uuid);
   }
 }

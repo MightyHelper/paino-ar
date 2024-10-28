@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3966560609243808083}
+  - component: {fileID: 3046084239213221435}
   m_Layer: 0
   m_Name: PianoOctave
   m_TagString: Untagged
@@ -26,23 +27,48 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.041666668, y: 0.041666668, z: 0.041666668}
+  m_LocalScale: {x: 0.041666668, y: 0.039999995, z: 0.041666668}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 9041349610679132584}
+  - {fileID: 6809575482457501794}
   - {fileID: 7623015723147197086}
+  - {fileID: 3427675767025377420}
   - {fileID: 1240319923301375676}
   - {fileID: 1472509456761118816}
-  - {fileID: 377607554550192321}
-  - {fileID: 3224838569548743162}
-  - {fileID: 31974232223470991}
-  - {fileID: 6809575482457501794}
-  - {fileID: 3427675767025377420}
   - {fileID: 8490395928912881040}
+  - {fileID: 377607554550192321}
   - {fileID: 1736412176802300310}
+  - {fileID: 3224838569548743162}
   - {fileID: 1537133595585339382}
+  - {fileID: 31974232223470991}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3046084239213221435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4858063904605017108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 955cb70b5e0de944388d4cbc6288f8ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  keys:
+  - {fileID: 5373176211511102181}
+  - {fileID: 6769002622823972134}
+  - {fileID: 6783103508979667411}
+  - {fileID: 3234042084256755144}
+  - {fileID: 2800826361522976241}
+  - {fileID: 2560137328520710957}
+  - {fileID: 8548921476966574292}
+  - {fileID: 3662975483070411660}
+  - {fileID: 1975063164147748050}
+  - {fileID: 1957066158108125879}
+  - {fileID: 1595631114681340594}
+  - {fileID: 4006392495711911618}
 --- !u!1001 &690795745773000668
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -53,7 +79,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2620507503705397248, guid: 8c10a420b7290ae4e833bd09451c9105, type: 3}
       propertyPath: m_Name
-      value: PianoBlackKey
+      value: Do#
       objectReference: {fileID: 0}
     - target: {fileID: 6275286421078026174, guid: 8c10a420b7290ae4e833bd09451c9105, type: 3}
       propertyPath: m_LocalPosition.x
@@ -100,6 +126,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c10a420b7290ae4e833bd09451c9105, type: 3}
+--- !u!114 &6769002622823972134 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6081661697678551802, guid: 8c10a420b7290ae4e833bd09451c9105, type: 3}
+  m_PrefabInstance: {fileID: 690795745773000668}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d6c3ff0c62567b4caad8b123f8acfe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &6809575482457501794 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6275286421078026174, guid: 8c10a420b7290ae4e833bd09451c9105, type: 3}
@@ -115,7 +152,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2620507503705397248, guid: 8c10a420b7290ae4e833bd09451c9105, type: 3}
       propertyPath: m_Name
-      value: PianoBlackKey (2)
+      value: Fa#
       objectReference: {fileID: 0}
     - target: {fileID: 6275286421078026174, guid: 8c10a420b7290ae4e833bd09451c9105, type: 3}
       propertyPath: m_LocalPosition.x
@@ -167,6 +204,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6275286421078026174, guid: 8c10a420b7290ae4e833bd09451c9105, type: 3}
   m_PrefabInstance: {fileID: 2505613128846688814}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8548921476966574292 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6081661697678551802, guid: 8c10a420b7290ae4e833bd09451c9105, type: 3}
+  m_PrefabInstance: {fileID: 2505613128846688814}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d6c3ff0c62567b4caad8b123f8acfe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3057689411712271894
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -177,7 +225,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2620507503705397248, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
       propertyPath: m_Name
-      value: PianoWhiteKey
+      value: Do
       objectReference: {fileID: 0}
     - target: {fileID: 6275286421078026174, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
       propertyPath: m_LocalPosition.x
@@ -224,6 +272,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
+--- !u!114 &5373176211511102181 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6989097451079044339, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
+  m_PrefabInstance: {fileID: 3057689411712271894}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d6c3ff0c62567b4caad8b123f8acfe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &9041349610679132584 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6275286421078026174, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
@@ -239,7 +298,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2620507503705397248, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
       propertyPath: m_Name
-      value: PianoWhiteKey (1)
+      value: Re
       objectReference: {fileID: 0}
     - target: {fileID: 6275286421078026174, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
       propertyPath: m_LocalPosition.x
@@ -286,6 +345,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
+--- !u!114 &6783103508979667411 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6989097451079044339, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
+  m_PrefabInstance: {fileID: 4529547732139367712}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d6c3ff0c62567b4caad8b123f8acfe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &7623015723147197086 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6275286421078026174, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
@@ -301,7 +371,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2620507503705397248, guid: 8c10a420b7290ae4e833bd09451c9105, type: 3}
       propertyPath: m_Name
-      value: PianoBlackKey (4)
+      value: La#
       objectReference: {fileID: 0}
     - target: {fileID: 6275286421078026174, guid: 8c10a420b7290ae4e833bd09451c9105, type: 3}
       propertyPath: m_LocalPosition.x
@@ -353,6 +423,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6275286421078026174, guid: 8c10a420b7290ae4e833bd09451c9105, type: 3}
   m_PrefabInstance: {fileID: 4774577691009415240}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1595631114681340594 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6081661697678551802, guid: 8c10a420b7290ae4e833bd09451c9105, type: 3}
+  m_PrefabInstance: {fileID: 4774577691009415240}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d6c3ff0c62567b4caad8b123f8acfe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4861965977964136414
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -363,7 +444,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2620507503705397248, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
       propertyPath: m_Name
-      value: PianoWhiteKey (3)
+      value: Fa
       objectReference: {fileID: 0}
     - target: {fileID: 6275286421078026174, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
       propertyPath: m_LocalPosition.x
@@ -415,6 +496,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6275286421078026174, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
   m_PrefabInstance: {fileID: 4861965977964136414}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2560137328520710957 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6989097451079044339, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
+  m_PrefabInstance: {fileID: 4861965977964136414}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d6c3ff0c62567b4caad8b123f8acfe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5053262698352474370
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -425,7 +517,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2620507503705397248, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
       propertyPath: m_Name
-      value: PianoWhiteKey (2)
+      value: Mi
       objectReference: {fileID: 0}
     - target: {fileID: 6275286421078026174, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
       propertyPath: m_LocalPosition.x
@@ -477,6 +569,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6275286421078026174, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
   m_PrefabInstance: {fileID: 5053262698352474370}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2800826361522976241 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6989097451079044339, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
+  m_PrefabInstance: {fileID: 5053262698352474370}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d6c3ff0c62567b4caad8b123f8acfe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5696686756901348904
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -487,7 +590,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2620507503705397248, guid: 8c10a420b7290ae4e833bd09451c9105, type: 3}
       propertyPath: m_Name
-      value: PianoBlackKey (3)
+      value: Sol#
       objectReference: {fileID: 0}
     - target: {fileID: 6275286421078026174, guid: 8c10a420b7290ae4e833bd09451c9105, type: 3}
       propertyPath: m_LocalPosition.x
@@ -539,6 +642,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6275286421078026174, guid: 8c10a420b7290ae4e833bd09451c9105, type: 3}
   m_PrefabInstance: {fileID: 5696686756901348904}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1975063164147748050 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6081661697678551802, guid: 8c10a420b7290ae4e833bd09451c9105, type: 3}
+  m_PrefabInstance: {fileID: 5696686756901348904}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d6c3ff0c62567b4caad8b123f8acfe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5921041439424774015
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -549,7 +663,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2620507503705397248, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
       propertyPath: m_Name
-      value: PianoWhiteKey (4)
+      value: Sol
       objectReference: {fileID: 0}
     - target: {fileID: 6275286421078026174, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
       propertyPath: m_LocalPosition.x
@@ -601,6 +715,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6275286421078026174, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
   m_PrefabInstance: {fileID: 5921041439424774015}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3662975483070411660 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6989097451079044339, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
+  m_PrefabInstance: {fileID: 5921041439424774015}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d6c3ff0c62567b4caad8b123f8acfe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6298235312100700721
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -611,7 +736,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2620507503705397248, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
       propertyPath: m_Name
-      value: PianoWhiteKey (6)
+      value: Si
       objectReference: {fileID: 0}
     - target: {fileID: 6275286421078026174, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
       propertyPath: m_LocalPosition.x
@@ -663,6 +788,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6275286421078026174, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
   m_PrefabInstance: {fileID: 6298235312100700721}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4006392495711911618 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6989097451079044339, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
+  m_PrefabInstance: {fileID: 6298235312100700721}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d6c3ff0c62567b4caad8b123f8acfe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8685129430864168754
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -673,7 +809,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2620507503705397248, guid: 8c10a420b7290ae4e833bd09451c9105, type: 3}
       propertyPath: m_Name
-      value: PianoBlackKey (1)
+      value: Re#
       objectReference: {fileID: 0}
     - target: {fileID: 6275286421078026174, guid: 8c10a420b7290ae4e833bd09451c9105, type: 3}
       propertyPath: m_LocalPosition.x
@@ -720,6 +856,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c10a420b7290ae4e833bd09451c9105, type: 3}
+--- !u!114 &3234042084256755144 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6081661697678551802, guid: 8c10a420b7290ae4e833bd09451c9105, type: 3}
+  m_PrefabInstance: {fileID: 8685129430864168754}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d6c3ff0c62567b4caad8b123f8acfe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &3427675767025377420 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6275286421078026174, guid: 8c10a420b7290ae4e833bd09451c9105, type: 3}
@@ -735,7 +882,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2620507503705397248, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
       propertyPath: m_Name
-      value: PianoWhiteKey (5)
+      value: La
       objectReference: {fileID: 0}
     - target: {fileID: 6275286421078026174, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
       propertyPath: m_LocalPosition.x
@@ -782,6 +929,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
+--- !u!114 &1957066158108125879 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6989097451079044339, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}
+  m_PrefabInstance: {fileID: 8923502605814900292}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d6c3ff0c62567b4caad8b123f8acfe0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &3224838569548743162 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6275286421078026174, guid: d76d8f9cc93ae1d4f96a8adddfd16590, type: 3}

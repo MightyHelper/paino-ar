@@ -1,6 +1,6 @@
 # Variables
 SRC = src/server.ts
-DIST = dist/server.js
+DIST = dist/src/server.js
 
 # Targets
 $(DIST): $(SRC)

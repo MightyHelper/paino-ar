@@ -45,7 +45,7 @@ class WebsocketConnection {
 	}
 
 	connectToWebsocket(): WebSocket {
-		let websocket = new WebSocket('ws://localhost:6444');
+		let websocket = new WebSocket('ws://localhost:6443');
 		websocket.addEventListener('open', this.onOpen.bind(this));
 		websocket.addEventListener('close', this.onClose.bind(this));
 		websocket.addEventListener('message', this.onMessage.bind(this));
