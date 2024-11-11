@@ -121,6 +121,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d6c3ff0c62567b4caad8b123f8acfe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  downDistance: 20
+  downAngle: 7
+  normalMaterial: {r: 0, g: 0, b: 0, a: 0}
+  requiredMaterial: {r: 1, g: 0, b: 0, a: 0}
 --- !u!1 &2620507503705397248
 GameObject:
   m_ObjectHideFlags: 0

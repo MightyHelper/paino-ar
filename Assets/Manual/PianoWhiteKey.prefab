@@ -123,6 +123,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   downDistance: 20
   downAngle: 7
+  normalMaterial: {r: 1, g: 1, b: 1, a: 0}
+  requiredMaterial: {r: 1, g: 0, b: 0, a: 0}
 --- !u!1 &2620507503705397248
 GameObject:
   m_ObjectHideFlags: 0

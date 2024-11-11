@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 /// <summary>
@@ -13,11 +12,13 @@ public class WsPianoEventHandler: WsEventHandler {
   /// The list of pianos
   /// </summary>
   public List<Piano> pianos = new();
-
+  private readonly PianoManager _pianoManager = new();
+  private int[] _hoveredKeys = Array.Empty<int>();
   private Logger _logger;
 
   private void Awake() {
     _logger = GetComponent<Logger>();
+    _pianoManager._logger = _logger;
   }
 
   /// <summary>
@@ -25,8 +26,13 @@ public class WsPianoEventHandler: WsEventHandler {
   /// </summary>
   /// <param name="evt">The event to set the key value</param>
   public override void OnWsEvent(WsEvent evt) {
-    if (evt.Payload.Key <= 0) return;
-    pianos.ForEach(piano => piano.SetSingleKeyValue(evt.Payload.Key, evt.Payload.Type == "noteOn" ? 1f : 0f));
+    var payloadKey = evt.Payload.Key;
+    var noteOn = evt.Payload.Type == "noteOn";
+    if (payloadKey <= 0) return;
+    _pianoManager.OnKey(payloadKey, noteOn);
+    pianos.ForEach(piano => {
+      piano.SetSingleKeyValue(payloadKey, noteOn ? 1f : 0f);
+    });
   }
 
   /// <summary>
@@ -34,8 +40,12 @@ public class WsPianoEventHandler: WsEventHandler {
   /// </summary>
   /// <param name="go">The piano to add</param>
   public void AddPiano(GameObject go) {
-    pianos.Add(go.GetComponent<Piano>());
+    var piano = go.GetComponent<Piano>();
+    pianos.Add(piano);
     _logger.Log($"Added piano {go.name}; now {pianos.Count} pianos.");
+    piano.RegisterManager(_pianoManager);
+    _logger.Log($"Registered manager to piano {go.name}");
+
   }
 
   /// <summary>

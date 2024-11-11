@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PianoOctave : MonoBehaviour {
   [SerializeField] protected Key[] keys;
+  [SerializeField] protected int startKey = 0;
 
   public void SetKeyValue(float[] values) {
     if (values.Length != keys.Length) {
@@ -14,5 +15,16 @@ public class PianoOctave : MonoBehaviour {
   }
   public void SetSingleKeyValue(int index, float value) {
     keys[index].SetTargetFrame(value);
+  }
+  
+  public void SetSingleKeyShouldBePressed(int index, bool shouldBePressed) {
+    keys[index].SetShouldBePressed(shouldBePressed);
+  }
+  
+  public void RegisterManager(PianoManager manager, int startKey) {
+    for (var i = 0; i < keys.Length; i++) {
+      keys[i].PianoManager = manager;
+      keys[i].Events = manager.GetEventsFor(startKey + i);
+    }
   }
 }

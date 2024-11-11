@@ -20,9 +20,9 @@ public class WebSocketConnection : MonoBehaviour {
     _websocket.OnOpen += () => { _logger.Log("ws:Connection open!"); };
     _websocket.OnError += e => { _logger.Log("ws:Error! " + e); };
     _websocket.OnClose += e => { _logger.Log("ws:Connection closed!"); };
-    _websocket.OnMessage += bytes => {
+    _websocket.OnMessage += (bytes, offset, length) => {
       try {
-        var jsonNode = JSON.Parse(System.Text.Encoding.UTF8.GetString(bytes));
+        var jsonNode = JSON.Parse(System.Text.Encoding.UTF8.GetString(bytes, offset, length));
         var wsEvent = new WsEvent(jsonNode);
         if (wsEvent.Kind == "keys") {
           foreach (var handler in wsEventHandlers) {
@@ -41,21 +41,6 @@ public class WebSocketConnection : MonoBehaviour {
     await _websocket.Connect();
   }
 
-
-  public void Update() {
-#if !UNITY_WEBGL || UNITY_EDITOR
-    _websocket.DispatchMessageQueue();
-#endif
-  }
-
-  public async void SendWebSocketMessage() {
-    if (_websocket.State != WebSocketState.Open) return;
-    // Sending bytes
-    await _websocket.Send(new byte[] { 10, 20, 30 });
-
-    // Sending plain text
-    await _websocket.SendText("plain text message");
-  }
 
   private async void OnApplicationQuit() {
     await _websocket.Close();
