@@ -5,7 +5,7 @@
 		activeMidiInputs,
 		activeMidiOutputs,
 		activeKeys,
-		activePedal, lastParsedMidiMessage
+		lastParsedMidiMessage
 	} from '$lib/MidiStore';
 	import { websocket } from '$lib/WebSocketConnection';
 
@@ -78,7 +78,7 @@ Piano:
 				  height: calc({whiteKeyHeightCM * cm_scale}cm - 2px);
 				  left: calc({(i * whiteKeyWidthCM + octave * octaveWidthCM + keyboardOffsetCM) * cm_scale}cm + 1px);
 				  top: 1px;
-				  background: #{asHex(0xff - extra($activeKeys[note] || 0)).repeat(2) + asHex(0xff-2*$activePedal)};
+				  background: #{asHex(0xff - extra($activeKeys[note] || 0)).repeat(2) + asHex(0xff-2*($activeKeys[-1] ?? 0))};
 				"
         ></div>
       {/if}
@@ -90,7 +90,7 @@ Piano:
             height: calc({blackKeyHeightCM * cm_scale}cm - 2px);
             left: {(offsetCM + octave * octaveWidthCM + keyboardOffsetCM) * cm_scale}cm;
             top: 1px;
-            background: #{asHex(extra($activeKeys[note] || 0)).repeat(2) + asHex(2*$activePedal)};
+            background: #{asHex(extra($activeKeys[note] || 0)).repeat(2) + asHex(2*($activeKeys[-1] ?? 0))};
           "
         ></div>
       {/if}

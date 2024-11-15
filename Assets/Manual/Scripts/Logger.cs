@@ -18,7 +18,11 @@ public class Logger : MonoBehaviour {
   
   public void Log(string message) {
     _logString += message + "\n";
+    if (logText) logText.text = _logString;
+  }
 
+  public void Clear() {
+    _logString = "";
     if (logText) logText.text = _logString;
   }
 }

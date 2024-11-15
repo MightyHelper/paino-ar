@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: fe374d374900e2649b52c1a64609c936, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -125,6 +125,8 @@ MonoBehaviour:
   downAngle: 7
   normalMaterial: {r: 1, g: 1, b: 1, a: 0}
   requiredMaterial: {r: 1, g: 0, b: 0, a: 0}
+  markerPrefab: {fileID: 8310816154044707887, guid: 8371174453b81f145af5f16c52d8bd5d, type: 3}
+  markerColor: {r: 0.6415094, g: 0.33588463, b: 0.62832505, a: 0}
 --- !u!1 &2620507503705397248
 GameObject:
   m_ObjectHideFlags: 0

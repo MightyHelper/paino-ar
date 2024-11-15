@@ -7,6 +7,8 @@ public class Key : MonoBehaviour {
   public float downAngle = 7f;
   public Color normalMaterial;
   public Color requiredMaterial;
+  public GameObject markerPrefab;
+  public Color markerColor;
   private float _targetFrame;
   private float _currentFrame;
   private bool _shouldBePressed;
@@ -16,16 +18,25 @@ public class Key : MonoBehaviour {
 
   public KeyEvent[] Events {
     set {
+      // Delete possibly existing markers
+      
+      if (_markers != null) {
+        foreach (var marker in _markers) {
+          if (marker.marker) {
+            Destroy(marker.marker);
+          }
+        }
+      }
+      
       _markers = new KeyEventMarker[value.Length];
       for (var i = 0; i < value.Length; i++) {
         var keyEvent = value[i];
-        var marker = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        marker.transform.parent = transform;
+        var marker = Instantiate(markerPrefab, transform, true);
         marker.transform.localPosition = new Vector3(0, keyEvent.Start * 1 + 1, 0);
         marker.transform.localScale = new Vector3(0.9f, 0.9f, 0.9f);
         marker.transform.localEulerAngles = new Vector3(0, 0, 0);
         var material = marker.GetComponent<MeshRenderer>().material;
-        material.color = Color.red;
+        material.color = markerColor;
         _markers[i] = new KeyEventMarker { evt = keyEvent, marker = marker, material = material };
       }
 
@@ -34,9 +45,9 @@ public class Key : MonoBehaviour {
     get => _events;
   }
 
-  public PianoManager PianoManager;
+  public PianoManager pianoManager;
 
-  private void Awake() {
+  private void Start() {
     _component = GetComponent<MeshRenderer>();
   }
 
@@ -61,7 +72,7 @@ public class Key : MonoBehaviour {
 
   private void Update() {
     if (Events == null) return;
-    var currentTime = PianoManager.CurrentTime;
+    var currentTime = pianoManager.CurrentTime;
     SetShouldBePressed(false);
     // Change Y position of markers based on time
     foreach (var marker in _markers) {
@@ -78,10 +89,7 @@ public class Key : MonoBehaviour {
       var shouldBePressedNext = Mathf.Approximately(keyEvent.Start, currentTime);
       if (shouldBePressedNext) {
         SetShouldBePressed(true);
-        marker.material.color = Color.yellow;
       }
-
-      marker.material.color = Color.red;
       var markerY = Mathf.Lerp(marker.marker.transform.localPosition.y, keyEvent.Start * 1 - currentTime + 1, 0.1f);
       marker.marker.transform.localPosition = new Vector3(0, markerY, 0);
     }

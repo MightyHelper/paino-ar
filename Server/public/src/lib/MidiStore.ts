@@ -9,7 +9,6 @@ export const midiOutputs = writable<MIDIOutput[]>([]);
 export const lastMidiMessage = writable<MIDIMessageEvent | null>(null);
 export const lastParsedMidiMessage = writable<ParsedMidiMessage | null>(null);
 export const activeKeys = writable<{ [key: string]: number }>({});
-export const activePedal = writable<number>(0);
 
 const isNoteOff = (evt: number): boolean => (evt & 0b11110000) === 0b10000000;
 const isNoteOn = (evt: number): boolean => (evt & 0b11110000) === 0b10010000;

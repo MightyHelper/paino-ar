@@ -7,18 +7,17 @@ using UnityEngine;
 ///
 /// This class is responsible for handling the WebSocket events for the piano.
 /// </summary>
-public class WsPianoEventHandler: WsEventHandler {
+public class WsPianoEventHandler: WsEventHandler, SongUpdateListener {
   /// <summary>
   /// The list of pianos
   /// </summary>
   public List<Piano> pianos = new();
-  private readonly PianoManager _pianoManager = new();
-  private int[] _hoveredKeys = Array.Empty<int>();
-  private Logger _logger;
+  public PianoManager pianoManager;
+  public Logger logger;
 
-  private void Awake() {
-    _logger = GetComponent<Logger>();
-    _pianoManager._logger = _logger;
+  private void Start() {
+    pianoManager.RegisterSongUpdateListener(this);
+    logger.Log("Registered song update listener.");
   }
 
   /// <summary>
@@ -29,7 +28,7 @@ public class WsPianoEventHandler: WsEventHandler {
     var payloadKey = evt.Payload.Key;
     var noteOn = evt.Payload.Type == "noteOn";
     if (payloadKey <= 0) return;
-    _pianoManager.OnKey(payloadKey, noteOn);
+    pianoManager.OnKey(payloadKey, noteOn);
     pianos.ForEach(piano => {
       piano.SetSingleKeyValue(payloadKey, noteOn ? 1f : 0f);
     });
@@ -42,9 +41,9 @@ public class WsPianoEventHandler: WsEventHandler {
   public void AddPiano(GameObject go) {
     var piano = go.GetComponent<Piano>();
     pianos.Add(piano);
-    _logger.Log($"Added piano {go.name}; now {pianos.Count} pianos.");
-    piano.RegisterManager(_pianoManager);
-    _logger.Log($"Registered manager to piano {go.name}");
+    logger.Log($"Added piano {go.name}; now {pianos.Count} pianos.");
+    piano.RegisterManager(pianoManager);
+    logger.Log($"Registered manager to piano {go.name}");
 
   }
 
@@ -53,7 +52,15 @@ public class WsPianoEventHandler: WsEventHandler {
   /// </summary>
   /// <param name="go">The piano to remove</param>
   public void RemovePiano(GameObject go) {
-    pianos.Remove(go.GetComponent<Piano>());
-    _logger.Log($"Removed piano {go.name}; now {pianos.Count} pianos.");
+    var piano = go.GetComponent<Piano>();
+    pianos.Remove(piano);
+    logger.Log($"Removed piano {go.name}; now {pianos.Count} pianos.");
+  }
+
+  public void OnSongUpdate(PianoManager manager) {
+    logger.Log("Song update!!!");
+    pianos.ForEach(piano => {
+      piano.RegisterManager(pianoManager);
+    });
   }
 }

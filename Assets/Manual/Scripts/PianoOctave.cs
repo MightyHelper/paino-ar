@@ -23,7 +23,7 @@ public class PianoOctave : MonoBehaviour {
   
   public void RegisterManager(PianoManager manager, int startKey) {
     for (var i = 0; i < keys.Length; i++) {
-      keys[i].PianoManager = manager;
+      keys[i].pianoManager = manager;
       keys[i].Events = manager.GetEventsFor(startKey + i);
     }
   }
